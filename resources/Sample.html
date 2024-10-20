@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: white;
+            position: relative;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Watermark Styling */
+        .watermark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            background: url('invoice.png') no-repeat center center;
+            background-size: cover;
+        }
+
+        /* Header Image Styling */
+        .header-img {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .header-img img {
+            max-width: 200px; /* Adjust size of the bill image */
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        /* Alternating row colors */
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+
+        /* Avoid splitting table rows across pages */
+        tr {
+            page-break-inside: avoid;
+        }
+    </style>
+</head>
+<body>
+    <!-- Watermark Image -->
+    <div class="watermark"></div>
+
+    <!-- Bill Image at the Top -->
+    <div class="header-img">
+        <img src="bill.png" alt="Bill Logo">
+    </div>
+
+    <!-- Invoice Content -->
+    <h1>{{header}}</h1>
+    <p>Name: {{name}}</p>
+    <h2>Order Details</h2>
+    <table>
+        <thead>
+            <tr>
+                {{tableHeader}} <!-- Dynamic table header -->
+            </tr>
+        </thead>
+        <tbody>
+            {{table}} <!-- Dynamic table data -->
+        </tbody>
+    </table>
+    <p>Date: {{date}}</p>
+    <p>Total: {{total}}</p>
+</body>
+</html>

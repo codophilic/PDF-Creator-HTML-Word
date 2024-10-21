@@ -1,6 +1,7 @@
 package pdf;
 
 import org.apache.poi.xwpf.usermodel.*;
+import org.apache.xmlbeans.XmlCursor;
 
 import java.io.*;
 import java.util.HashMap;
@@ -45,16 +46,17 @@ public class WordDocGeneratorFromWordDoc {
             // Find the "Order Details" paragraph to insert the table
             XWPFParagraph orderDetailsParagraph = findOrderDetailsParagraph(document);
             if (orderDetailsParagraph != null) {
-                // Create the table with headers and rows right after the "Order Details" paragraph
-                XWPFTable table = document.createTable();
+                XmlCursor cursor = orderDetailsParagraph.getCTP().newCursor();
+
+                // Create the table with headers and rows right after the "Order Details" paragraph            	
+                // Create a new table at the cursor position
+                XWPFTable table = document.insertNewTbl(cursor);
                 addTableHeaders(table, headers, tableFontSize, tableFontStyle);
                 addTableRows(table, rows, tableFontSize, tableFontStyle);
                 
-                // Move the table to the next position after the "Order Details" paragraph
-                int orderDetailsIndex = document.getParagraphs().indexOf(orderDetailsParagraph);
-                System.out.println(orderDetailsIndex);
-                document.createParagraph(); // Create a new paragraph for the table
-                document.setParagraph(orderDetailsParagraph, orderDetailsIndex + 1);
+                //Removing the placeholders
+                document.removeBodyElement(document.getPosOfParagraph(orderDetailsParagraph));
+
             }
 
             // Replace placeholders in tables
@@ -70,7 +72,7 @@ public class WordDocGeneratorFromWordDoc {
     // Method to find the "Order Details" paragraph
     private static XWPFParagraph findOrderDetailsParagraph(XWPFDocument document) {
         for (XWPFParagraph paragraph : document.getParagraphs()) {
-            if (paragraph.getText().contains("Invoice")) {
+            if (paragraph.getText().contains("(tableplaceholder)")) {
                 return paragraph;
             }
         }

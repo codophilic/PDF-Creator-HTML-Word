@@ -1,7 +1,11 @@
 package pdf;
 
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.*;
 import org.apache.xmlbeans.XmlCursor;
+import org.docx4j.Docx4J;
+import org.docx4j.openpackaging.exceptions.Docx4JException;
+import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 
 import java.io.*;
 import java.util.HashMap;
@@ -21,7 +25,7 @@ public class WordDocGeneratorFromWordDoc {
         // Define dynamic headers and rows for the table (order details)
         List<String> headers = List.of("Item", "Description", "Quantity", "Price", "Total");
         List<List<String>> rows = List.of(
-                List.of("1", "Laptop", "2", "$700", "$1400"),
+                List.of("1", "Laptop", "1", "$700", "$1400"),
                 List.of("2", "Mouse", "1", "$50", "$50"),
                 List.of("3", "Keyboard", "1", "$100", "$100")
         );
@@ -66,6 +70,28 @@ public class WordDocGeneratorFromWordDoc {
 
             // Save the updated document
             document.write(fos);
+            // Convert XWPFDocument to ByteArrayOutputStream
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            document.write(byteArrayOutputStream);
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+
+            // Convert ByteArrayInputStream to WordprocessingMLPackage
+            
+            WordprocessingMLPackage wordMLPackage;
+			try {
+				wordMLPackage = WordprocessingMLPackage.load(byteArrayInputStream);
+				// Convert to PDF using docx4j
+
+	            OutputStream os = new FileOutputStream(new File("C:/Users/pandy/OneDrive/Desktop/Real PDF Creator/PDF-Creator-HTML/resources/InvoiceUpdate.pdf"));
+	            
+				Docx4J.toPDF(wordMLPackage, os);
+				os.close();
+			} catch (Docx4JException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            
+
         }
     }
 

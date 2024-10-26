@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -131,14 +132,27 @@ public class PDFStatementFromHTML {
         String tableData = tableDataBuilder.toString();
 
         // Map Placeholder and its value
-        Map<String, String> placeholders = Map.of(
-                "{{header}}", "Invoice",
-                "{{name}}", name,
-                "{{date}}", date,
-                "{{tableHeader}}", tableHeader,
-                "{{table}}",tableData,
-                "{{total}}", total
-        );
+//        Map<String, String> placeholders = Map.of(
+//                "{{header}}", "Invoice",
+//                "{{name}}", name,
+//                "{{date}}", date,
+//                "{{tableHeader}}", tableHeader,
+//                "{{table}}",tableData,
+//                "{{total}}", total
+//        );
+//        
+        Map<String, String> placeholders = new HashMap<String, String>();
+        placeholders.put("{{header}}", "Invoice");
+        placeholders.put("{{name}}", name);
+        placeholders.put("{{date}}", date);
+        placeholders.put("{{tableHeader}}", tableHeader);
+        placeholders.put("{{table}}",tableData);
+        placeholders.put("{{total}}", total);
+        for(int i=0;i<=1000;i++) {
+        	placeholders.put("{{date"+i+"}}",date);
+        	placeholders.put("{{total"+i+"}}",total);
+//			System.out.println("\"{{date"+i+"}}\",date,\n"+"\"{{total"+i+"}}\",total,");
+		}
 //        String filledHtml = htmlContent
 //                .replace("{{header}}", "Invoice")        // Replacing header dynamically
 //                .replace("{{name}}", name)

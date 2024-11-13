@@ -6,6 +6,7 @@ import org.apache.xmlbeans.XmlCursor;
 import org.docx4j.Docx4J;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
+import javax.xml.namespace.QName;
 
 import java.io.*;
 import java.util.HashMap;
